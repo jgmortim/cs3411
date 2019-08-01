@@ -1,0 +1,61 @@
+                                    README
+-Everything Works! 
+
+-Code is best viewed with a tab width of 4. (for comment alignment)
+
+-Valgrind reports no leaks or errors.
+
+-Created an automated testing program.
+	-ran over 250,000 iterations to test for deadlock
+	-no deadlocks found
+
+-Program uses busy waiting with the variable "turn". This is considered a bad
+ practice for concurrent programming, but the program specifications permitted
+ it as this is not a course on concurrent programming. Despite this, I believe
+ I have eliminated all possible race conditions.
+
+-Ship placement and firing sequence is random. When every ship has a 1x1
+ dimension, no "smart" firing strategy exist as there is an equal probability
+ that the surviving ships lies any of the grid spaces that have not yet been
+ fired upon. As such the only strategy (other than cheating) is to not shoot at
+ spaces already fired upon.
+
+-The random number generator is seeded with the players pid to prevent
+ identical placements and firing patterns. This works because no two processes
+ can have the same pid.
+
+-Program does support grids larger or smaller than 5x5 and more or less than 5
+ ships per player. Simply change the define statements for GRIDWIDTH,
+ GRIDHEIGHT, and MAXSHIPS. As this is beyond the scope of the program there is
+ nothing to prevent you from using nonsense values (i.e., negative width, 1x1
+ grid with 5 ships, etc.).
+	-If the number of ships is greater than the number of grid spaces, the
+	 program will deadlock as it tries to find available spaces to place
+	 all of the ships. This could be fixed by limiting the number of ships
+	 placed on the grid to the number of grid spaces.
+	-If the width dimension of the grid is zero, gcc will throw warnings
+	 about "zero-size array". No warnings or errors are given for 0 height.
+	 If you run the program anyway, mmap will fail, and the program will
+	 exit gracefully.
+	-If width is negative, gcc with throw errors for negative array size.
+	-If height is negative, no warnings or errors are given. If you run the
+	 program anyway, mmap will fail, and the program will exit gracefully.
+	-If there are zero ships, Player 1 will win every game.
+	-If the number of ships equals the number of grid spaces, Player 1 will
+	 win every game (Player 1 gets first move).
+	-Largest test was 10x10 with 25 ships.
+	-Using 30x1 (WxH) with 1 ship makes for an amusing game.
+
+-Error handling (exit with no leaks) for:
+	-incorrect input
+	-fork()
+	-mmap()
+	-open()
+
+-No/minimal error handling for:
+	-write()
+	-sprintf()
+	-close()
+
+
+	
